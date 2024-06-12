@@ -1,18 +1,23 @@
 package com.api.api;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 //9-6-2024
 import com.api.api.parsers.*;
+import com.api.api.tools.*;
+
 //-----------------------------------------
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +31,21 @@ public class ApiApplication {
 
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(ApiApplication.class, args);
-		System.out.print ("holiss 2");
+		System.out.println ("holiss 2");
+		System.out.println (leerArchivo.muestraContenido2("C:\\Users\\l0646482\\n\\mi_desa2\\java\\S.LOG", "MSFT"));
+		String [] aca= leerArchivo.listActions ("");
+		System.out.println("aca: " + aca[0] + aca[1]);
+		ArrayList<String> array = new ArrayList<>();
+		System.out.println("track 1");
+		array = leerArchivo.listActionsArray("C:\\Users\\l0646482\\n\\mi_desa2\\java\\lista-acciones.txt");
+		System.out.println("track 2");
+		for (int i = 0; i < array.size(); i++) {
+			System.out.println(array.get(i));
+			String sOption = array.get(i).substring (0,array.get(i).indexOf(":"));
+			System.out.println("sOption: " + sOption);
+			String sUrlInvest = array.get(i).substring (array.get(i).indexOf(":")+1);
+			System.out.println("sUrlInvest: " + sUrlInvest);
+		}
 
 		String url = "https://www.lanacion.com.ar";
 
@@ -34,6 +53,7 @@ public class ApiApplication {
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 
 		// optional default is GET
+
 		con.setRequestMethod("GET");
 
 		//add request header
@@ -104,6 +124,41 @@ public class ApiApplication {
 	String home2() {
 		int iDolarNow = 0;
 		double iMola = 0;
+		double dAccionGral = 0;
+
+		ArrayList<String> array = new ArrayList<>();
+		System.out.println("track 1");
+		try {
+			array = leerArchivo.listActionsArray("C:\\Users\\l0646482\\n\\mi_desa2\\java\\lista-acciones.txt");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("track 2");
+		for (int i = 0; i < array.size(); i++) {
+			System.out.print("--------------------------------------------");
+			System.out.println(array.get(i));
+			String sOption = array.get(i).substring (0,array.get(i).indexOf(":"));
+			System.out.println("sOption: " + sOption);
+			String sUrlInvest = array.get(i).substring (array.get(i).indexOf(":")+1);
+			System.out.println("sUrlInvest: " + sUrlInvest);
+
+			try {
+				dAccionGral = ParserAcciones.iAccionValue(sUrlInvest);
+				System.out.println("dAccionGral: " + dAccionGral);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+		}
+
+
+		
 		try {
 			iDolarNow = ParserPage.iDolarLaNacion(); //iDolar ();
 			System.out.println("iDolar desde sasa: " + iDolarNow);
@@ -116,9 +171,18 @@ public class ApiApplication {
 			e.printStackTrace();
 		}
 		
-		return "Hello World! cata - modificado en caliente" + iDolarNow;
+		return "{ dolar: " + iDolarNow + "}";
 	}
 
 //----------------------------------
-
+    public static String muestraContenido(String archivo) throws FileNotFoundException, IOException { 
+    	String cadena; 
+        FileReader f = new FileReader(archivo); 
+        BufferedReader b = new BufferedReader(f); 
+        while((cadena = b.readLine())!=null) { 
+        	System.out.println(cadena); 
+        } 
+        b.close(); 
+		return cadena;
+	} 
 }

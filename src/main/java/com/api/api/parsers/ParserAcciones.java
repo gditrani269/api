@@ -20,7 +20,6 @@ public class ParserAcciones {
 
 		URL obj = new URL(url);
 		HttpURLConnection con;
-		int iDolarNow = 0;
         double dArma = 0;
 		try {
 			con = (HttpURLConnection) obj.openConnection();
@@ -31,61 +30,53 @@ public class ParserAcciones {
 			con.setRequestProperty("X-API-EMAIL", "myEmail@mail.com");
 
 			int responseCode = con.getResponseCode();
-//			System.out.println("\nSending 'GET' request to URL : " + url);
-//			System.out.println("Response Code : " + responseCode);
+			System.out.println("Response Code : " + responseCode);
 			BufferedReader in = new BufferedReader(
 				new InputStreamReader(con.getInputStream()));
 			String inputLine;
-			StringBuffer response = new StringBuffer();
+	//		StringBuffer response = new StringBuffer();
 			boolean bDolar = false;
 
 			while ((inputLine = in.readLine()) != null) {
 				
 				int iStar = inputLine.indexOf("instrument-price-last");
-				int iEnd = inputLine.indexOf("1501");
+//				int iEnd = inputLine.indexOf("1501");
 //				System.out.print("////////////////////////////////////////");
 				
 				if (iStar != -1 && !bDolar) {
 //					System.out.println(inputLine);
 //					System.out.println("iStar es la que va: " + iStar);
-					int iStarValue = inputLine.indexOf(">",iStar);
+					int iStarValue = inputLine.indexOf(">",iStar) + 1;
                     int iEndValue = inputLine.indexOf("<", iStarValue);
 //					System.out.println("iStarValue: " + iStarValue);
 //                  System.out.println("iEndValue: " + iEndValue);
-                    double dTmp = Double.parseDouble(inputLine.substring(iStarValue+1, iStarValue+7));
-                    iDolarNow = (int) dTmp;
+  //                  double dTmp = Double.parseDouble(inputLine.substring(iStarValue, iStarValue+7));
+     //               iDolarNow = (int) dTmp;
 					//iDolarNow = Integer.valueOf(inputLine.substring(iStarValue+1, iStarValue+10));
-                    String sAccionValue = inputLine.substring(iStarValue+1, iEndValue);
+                    String sAccionValue = inputLine.substring(iStarValue, iEndValue);
 //					System.out.println ("sAccionValue: " +sAccionValue);
 
 //                    System.out.println("---------------------------");
-                    String sOrigin=sAccionValue;
+ //                   String sOrigin=sAccionValue;
                     String sOrigin2=sAccionValue;
-                    String sSub = "";
+    //                String sSub = "";
                     
-                    if (sOrigin.contains(",")) {
-                        int iComa = sOrigin.indexOf(",");
-                        sSub = sOrigin.substring(0, iComa);
-//                        System.out.println ("sSub: " + sSub);
-//                        System.out.println ("sOrigin2: " + sOrigin2);
-                        sOrigin2 = sOrigin.replace(".", "");
-//                        System.out.println ("sOrigin2: " + sOrigin2);
+                    if (sOrigin2.contains(",")) {
+                        sOrigin2 = sOrigin2.replace(".", "");
                         sOrigin2 = sOrigin2.replace(",", ".");
-//                        System.out.println ("sOrigin2: " + sOrigin2);
                         dArma = Double.valueOf(sOrigin2);
-//                        System.out.println ("dArma: " + dArma);
                     }
 //                    System.out.println("---------------------------");
                 }
 				if (iStar != -1) {
-					bDolar = true;
+//					bDolar = true;
 //					System.out.println("iStar: " + iStar);
 				}
 /* 				if (iEnd != -1) {
 					System.out.println("iEnd: " + iEnd);
 				}*/
 			
-				response.append(inputLine);
+	//			response.append(inputLine);
 			}
 			in.close();
 		} catch (IOException e) {
