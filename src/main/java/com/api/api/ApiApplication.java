@@ -32,12 +32,12 @@ public class ApiApplication {
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(ApiApplication.class, args);
 		System.out.println ("holiss 2");
-		System.out.println (leerArchivo.muestraContenido2("C:\\Users\\l0646482\\n\\mi_desa2\\java\\S.LOG", "MSFT"));
+		System.out.println (leerArchivo.muestraContenido2("C:\\Users\\papa\\n\\desa\\java\\S.LOG", "MSFT"));
 		String [] aca= leerArchivo.listActions ("");
 		System.out.println("aca: " + aca[0] + aca[1]);
 		ArrayList<String> array = new ArrayList<>();
 		System.out.println("track 1");
-		array = leerArchivo.listActionsArray("C:\\Users\\l0646482\\n\\mi_desa2\\java\\lista-acciones.txt");
+		array = leerArchivo.listActionsArray("C:\\Users\\papa\\n\\desa\\java\\lista-acciones.txt");
 		System.out.println("track 2");
 		for (int i = 0; i < array.size(); i++) {
 			System.out.println(array.get(i));
@@ -125,11 +125,13 @@ public class ApiApplication {
 		int iDolarNow = 0;
 		double iMola = 0;
 		double dAccionGral = 0;
-
+		double dTotal = 0;
+		String sRta = "{\r\n" + //
+						"";
 		ArrayList<String> array = new ArrayList<>();
 		System.out.println("track 1");
 		try {
-			array = leerArchivo.listActionsArray("C:\\Users\\l0646482\\n\\mi_desa2\\java\\lista-acciones.txt");
+			array = leerArchivo.listActionsArray("C:\\Users\\papa\\n\\desa\\java\\lista-acciones.txt");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -141,22 +143,32 @@ public class ApiApplication {
 		for (int i = 0; i < array.size(); i++) {
 			System.out.print("--------------------------------------------");
 			System.out.println(array.get(i));
-			String sOption = array.get(i).substring (0,array.get(i).indexOf(":"));
-			System.out.println("sOption: " + sOption);
-			String sUrlInvest = array.get(i).substring (array.get(i).indexOf(":")+1);
+			String sOptionName = array.get(i).substring (0,array.get(i).indexOf(":"));
+			System.out.println("sOptionName: " + sOptionName);
+			sRta += "\t" + sOptionName + ": {\r\n";
+			int iOptionQuantity = Integer.valueOf(array.get(i).substring (array.get(i).indexOf(":")+1,array.get(i).indexOf("!")));
+			System.out.println("iOptionQuantity: " + iOptionQuantity);
+			String sUrlInvest = array.get(i).substring (array.get(i).indexOf("!")+1);
 			System.out.println("sUrlInvest: " + sUrlInvest);
 
 			try {
 				dAccionGral = ParserAcciones.iAccionValue(sUrlInvest);
 				System.out.println("dAccionGral: " + dAccionGral);
+				sRta += "\t\tvalor: " + dAccionGral + ",\r\n";
+				sRta += "\t\tCantidad: " + iOptionQuantity + "\r\n";
+				sRta += "\t\tSaldo: " + iOptionQuantity * dAccionGral / 1245+ "\r\n\t},\r\n" + //
+										"";
+				dTotal += iOptionQuantity * dAccionGral / 1245;
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
+			
 
 		}
-
+		sRta += "\ttotal: " + dTotal + "\r\n}";
+		System.out.println("sRta: " + sRta);
 
 		
 		try {
@@ -171,7 +183,7 @@ public class ApiApplication {
 			e.printStackTrace();
 		}
 		
-		return "{ dolar: " + iDolarNow + "}";
+		return sRta;//"{ dolar: " + iDolarNow + "}";
 	}
 
 //----------------------------------
