@@ -14,7 +14,7 @@ public class leerArchivo {
         return 8;
     }
 
-    public static String muestraContenido2(String archivo, String sSigla) throws FileNotFoundException, IOException { 
+/*    public static String muestraContenido2(String archivo, String sSigla) throws FileNotFoundException, IOException { 
     	String cadena; 
         String sRta="";
         FileReader f = new FileReader(archivo); 
@@ -40,10 +40,9 @@ public class leerArchivo {
         array [3] = "cuatro";
         array [4] = "cinco";
         return array;
-    }
+    }*/
 
     public static ArrayList <String> listActionsArray(String ruta) throws FileNotFoundException, IOException  {
-        System.out.println("listActionsArray track 1. " + ruta);
         ArrayList<String> array = new ArrayList<>();
 //        array.add ("uno dinamico");
   //      array.add ("dos dinamico");
@@ -53,7 +52,6 @@ public class leerArchivo {
         BufferedReader b = new BufferedReader(f); 
         while((cadena = b.readLine())!=null) { 
             array.add (cadena);
-            System.out.println(cadena);
         } 
         b.close(); 
 

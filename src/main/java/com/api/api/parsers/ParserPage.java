@@ -15,7 +15,7 @@ public class ParserPage {
     }
 
     public static int iDolarLaNacion () throws MalformedURLException {
-        System.out.println("dentro del ParserPage2 -> iDolarLaNacion");
+//        System.out.println("dentro del ParserPage2 -> iDolarLaNacion");
 		String url = "https://www.lanacion.com.ar";
 
 		URL obj = new URL(url);

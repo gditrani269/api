@@ -15,7 +15,7 @@ public class ParserAcciones {
     }
 
     public static double iAccionValue (String sUrl) throws MalformedURLException {
-        System.out.println("dentro del ParserPage -> iAccionValue");
+//        System.out.println("dentro del ParserPage -> iAccionValue");
 		String url = sUrl;//"https://es.investing.com/equities/microsoft-corp-ar";
 
 		URL obj = new URL(url);
@@ -30,7 +30,6 @@ public class ParserAcciones {
 			con.setRequestProperty("X-API-EMAIL", "myEmail@mail.com");
 
 			int responseCode = con.getResponseCode();
-			System.out.println("Response Code : " + responseCode);
 			BufferedReader in = new BufferedReader(
 				new InputStreamReader(con.getInputStream()));
 			String inputLine;
