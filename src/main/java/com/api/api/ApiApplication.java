@@ -17,6 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.api.api.parsers.*;
 import com.api.api.tools.*;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 //-----------------------------------------
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -99,7 +100,8 @@ public class ApiApplication {
 	}
 
 //------------------------------------
-	@RequestMapping("/sasa")
+	@RequestMapping("/users")
+	@CrossOrigin (originPatterns = "*")
 	String home2() {
 		int iDolarNow = 0;
 		double iMola = 0;
