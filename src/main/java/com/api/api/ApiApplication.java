@@ -107,7 +107,7 @@ public class ApiApplication {
 		double iMola = 0;
 		double dAccionGral = 0;
 		double dTotal = 0;
-		String sRta = "{\r\n";
+		String sRta = "";
 		ArrayList<String> array = new ArrayList<>();
 
 		try {
@@ -126,15 +126,15 @@ public class ApiApplication {
 		}
 		for (int i = 0; i < array.size(); i++) {
 			String sOptionName = array.get(i).substring (0,array.get(i).indexOf(":"));
-			sRta += "\t\"" + sOptionName + "\": {\r\n";
+			sRta += "[{accion: " + sOptionName + ",";
 			int iOptionQuantity = Integer.valueOf(array.get(i).substring (array.get(i).indexOf(":")+1,array.get(i).indexOf("!")));
 			String sUrlInvest = array.get(i).substring (array.get(i).indexOf("!")+1);
 			try {
 				dAccionGral = ParserAcciones.iAccionValue(sUrlInvest);
-				sRta += "\t\t\"valor\": \"" + dAccionGral + "\",\r\n";
-				sRta += "\t\t\"Cantidad\": \"" + iOptionQuantity + "\",\r\n";
-				sRta += "\t\t\"Saldo en pesos\": \"" + iOptionQuantity * dAccionGral + "\",\r\n";
-				sRta += "\t\t\"Saldo en dolares\": \"" + (double)Math.round (iOptionQuantity * dAccionGral / iDolarNow * 100d) / 100d + "\"\r\n\t},\r\n" + //
+				sRta += "valor: " + dAccionGral + ",";
+				sRta += "Cantidad: " + iOptionQuantity + ",";
+				sRta += "Saldo en pesos: " + iOptionQuantity * dAccionGral + ",";
+				sRta += "Saldo en dolares: " + (double)Math.round (iOptionQuantity * dAccionGral / iDolarNow * 100d) / 100d + "}," + //
 										"";
 				dTotal += iOptionQuantity * dAccionGral / iDolarNow;
 			} catch (MalformedURLException e) {
@@ -144,8 +144,9 @@ public class ApiApplication {
 			
 
 		}
-		sRta += "\t\"dolar\": \"" + iDolarNow + "\",\r\n";
-		sRta += "\t\"total\": \"" + dTotal + "\"\r\n}";
+//		sRta += "\t\"dolar\": \"" + iDolarNow + "\",\r\n";
+//		sRta += "\t\"total\": \"" + dTotal + "\"\r\n\t}";
+		sRta += "]";
 		System.out.println("sRta: " + sRta);
 
 		
@@ -153,6 +154,29 @@ public class ApiApplication {
 		return sRta;//"{ dolar: " + iDolarNow + "}";
 	}
 
+	@RequestMapping("/users2")
+	@CrossOrigin (originPatterns = "*")
+	String home3() {
+		String sRta = "[\r\n"
+						+ "\t{"
+						+ "\r\n\t\"id\": 1,\r\n"
+						+ "\t\"username\": \"pepe\",\r\n"
+						+ "\t\"email\": \"pepe@a.com\"\r\n"
+						+ "\t},\r\n"
+						+ "\t{"
+						+ "\r\n\t\"id\": 2,\r\n"
+						+ "\t\"username\": \"yo2\",\r\n"
+						+ "\t\"email\": \"yeah@a.com\"\r\n"
+						+ "\t},\r\n"
+						+ "\t{"
+						+ "\r\n\t\"id\": 3,\r\n"
+						+ "\t\"username\": \"papu\",\r\n"
+						+ "\t\"email\": \"papu@a.com\"\r\n"
+						+ "\t}\r\n";
+
+						sRta += "]";
+		return sRta;//"{ dolar: " + iDolarNow + "}";
+	}
 //----------------------------------
     public static String muestraContenido(String archivo) throws FileNotFoundException, IOException { 
     	String cadena; 
