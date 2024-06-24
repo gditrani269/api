@@ -107,7 +107,8 @@ public class ApiApplication {
 		double iMola = 0;
 		double dAccionGral = 0;
 		double dTotal = 0;
-		String sRta = "";
+		String sRta = "[";
+		int iKey = 0;
 		ArrayList<String> array = new ArrayList<>();
 
 		try {
@@ -126,24 +127,30 @@ public class ApiApplication {
 		}
 		for (int i = 0; i < array.size(); i++) {
 			String sOptionName = array.get(i).substring (0,array.get(i).indexOf(":"));
-			sRta += "[{accion: " + sOptionName + ",";
+			iKey ++;
+			sRta += "{\"accion\": \"" + sOptionName + "\",";
+			sRta += "\"id\": " + iKey + ",";
 			int iOptionQuantity = Integer.valueOf(array.get(i).substring (array.get(i).indexOf(":")+1,array.get(i).indexOf("!")));
 			String sUrlInvest = array.get(i).substring (array.get(i).indexOf("!")+1);
 			try {
 				dAccionGral = ParserAcciones.iAccionValue(sUrlInvest);
-				sRta += "valor: " + dAccionGral + ",";
-				sRta += "Cantidad: " + iOptionQuantity + ",";
-				sRta += "Saldo en pesos: " + iOptionQuantity * dAccionGral + ",";
-				sRta += "Saldo en dolares: " + (double)Math.round (iOptionQuantity * dAccionGral / iDolarNow * 100d) / 100d + "}," + //
+				sRta += "\"valor\": " + dAccionGral + ",";
+				sRta += "\"Cantidad\": " + iOptionQuantity + ",";
+				sRta += "\"Saldo_pesos\": " + iOptionQuantity * dAccionGral + ",";
+				sRta += "\"Saldo_dolares\": " + (double)Math.round (iOptionQuantity * dAccionGral / iDolarNow * 100d) / 100d + "}," + //
 										"";
 				dTotal += iOptionQuantity * dAccionGral / iDolarNow;
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}
-			
-			
-
 		}
+		sRta += "{\"accion\": \"" + "1" + "\",";
+		sRta += "\"valor\": " + 1 + ",";
+		sRta += "\"Cantidad\": " + 1 + ",";
+		sRta += "\"Saldo en pesos\": " + 1 * dAccionGral + ",";
+		sRta += "\"Saldo en dolares\": " + (double)Math.round (1 * dAccionGral / iDolarNow * 100d) / 100d + "}" + //
+								"";
+
 //		sRta += "\t\"dolar\": \"" + iDolarNow + "\",\r\n";
 //		sRta += "\t\"total\": \"" + dTotal + "\"\r\n\t}";
 		sRta += "]";
@@ -175,6 +182,7 @@ public class ApiApplication {
 						+ "\t}\r\n";
 
 						sRta += "]";
+		System.out.println(sRta);
 		return sRta;//"{ dolar: " + iDolarNow + "}";
 	}
 //----------------------------------
