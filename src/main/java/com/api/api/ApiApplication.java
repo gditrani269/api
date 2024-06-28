@@ -145,6 +145,8 @@ public class ApiApplication {
 			}
 		}
 		sRta += "{\"accion\": \"" + "1" + "\",";
+		iKey ++;
+		sRta += "\"id\": " + iKey + ",";
 		sRta += "\"valor\": " + 1 + ",";
 		sRta += "\"Cantidad\": " + 1 + ",";
 		sRta += "\"Saldo en pesos\": " + 1 * dAccionGral + ",";
