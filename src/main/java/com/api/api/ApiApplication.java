@@ -109,6 +109,8 @@ public class ApiApplication {
 		double dTotal = 0;
 		String sRta = "[";
 		int iKey = 0;
+		int iTotalPesos = 0;
+		int iTotalUsd = 0;
 		ArrayList<String> array = new ArrayList<>();
 
 		try {
@@ -137,20 +139,22 @@ public class ApiApplication {
 				sRta += "\"valor\": " + dAccionGral + ",";
 				sRta += "\"Cantidad\": " + iOptionQuantity + ",";
 				sRta += "\"Saldo_pesos\": " + iOptionQuantity * dAccionGral + ",";
+				iTotalPesos += iOptionQuantity * dAccionGral;
 				sRta += "\"Saldo_dolares\": " + (double)Math.round (iOptionQuantity * dAccionGral / iDolarNow * 100d) / 100d + "}," + //
 										"";
-				dTotal += iOptionQuantity * dAccionGral / iDolarNow;
+										
+	//			iTotalUsd += iOptionQuantity * dAccionGral / iDolarNow;
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 			}
 		}
-		sRta += "{\"accion\": \"" + "1" + "\",";
+		sRta += "{\"accion\": \"" + "Totales" + "\",";
 		iKey ++;
 		sRta += "\"id\": " + iKey + ",";
 		sRta += "\"valor\": " + 1 + ",";
 		sRta += "\"Cantidad\": " + 1 + ",";
-		sRta += "\"Saldo en pesos\": " + 1 * dAccionGral + ",";
-		sRta += "\"Saldo en dolares\": " + (double)Math.round (1 * dAccionGral / iDolarNow * 100d) / 100d + "}" + //
+		sRta += "\"Saldo_pesos\": " + 1 * iTotalPesos + ",";
+		sRta += "\"Saldo_dolares\": " + (double)Math.round (1 * iTotalPesos / iDolarNow * 100d) / 100d + "}" + //
 								"";
 
 //		sRta += "\t\"dolar\": \"" + iDolarNow + "\",\r\n";
