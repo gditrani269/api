@@ -121,7 +121,7 @@ public class ApiApplication {
 		}
 
 		try {
-			array = leerArchivo.listActionsArray("C:\\Users\\papa\\n\\desa\\java\\lista-acciones.txt");
+			array = leerArchivo.listActionsArray("lista-acciones.txt");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -135,7 +135,7 @@ public class ApiApplication {
 			int iOptionQuantity = Integer.valueOf(array.get(i).substring (array.get(i).indexOf(":")+1,array.get(i).indexOf("!")));
 			String sUrlInvest = array.get(i).substring (array.get(i).indexOf("!")+1);
 			try {
-				dAccionGral = ParserAcciones.iAccionValue(sUrlInvest);
+				dAccionGral = ParserAcciones.iAccionValue2(sUrlInvest);
 				sRta += "\"valor\": " + dAccionGral + ",";
 				sRta += "\"Cantidad\": " + iOptionQuantity + ",";
 				sRta += "\"Saldo_pesos\": " + iOptionQuantity * dAccionGral + ",";
@@ -151,7 +151,7 @@ public class ApiApplication {
 		sRta += "{\"accion\": \"" + "Totales" + "\",";
 		iKey ++;
 		sRta += "\"id\": " + iKey + ",";
-		sRta += "\"valor\": " + 1 + ",";
+		sRta += "\"valor\": " + iDolarNow + ",";
 		sRta += "\"Cantidad\": " + 1 + ",";
 		sRta += "\"Saldo_pesos\": " + 1 * iTotalPesos + ",";
 		sRta += "\"Saldo_dolares\": " + (double)Math.round (1 * iTotalPesos / iDolarNow * 100d) / 100d + "}" + //
@@ -190,6 +190,16 @@ public class ApiApplication {
 						sRta += "]";
 		System.out.println(sRta);
 		return sRta;//"{ dolar: " + iDolarNow + "}";
+	}
+
+	@RequestMapping("/users3")
+	@CrossOrigin (originPatterns = "*")
+	String home4() throws MalformedURLException {
+		System.out.println ("Users3");
+		double dAccionGral = 0;
+		dAccionGral = ParserAcciones.iAccionValue2("https://es.tradingview.com/symbols/BCBA-MOLA/");
+		System.out.println("users3: " + 8);
+		return "8";//"{ dolar: " + iDolarNow + "}";
 	}
 //----------------------------------
     public static String muestraContenido(String archivo) throws FileNotFoundException, IOException { 

@@ -1,0 +1,6 @@
+MOLA:441!https://es.investing.com/equities/molinos-agro
+MSFT:500!https://es.investing.com/equities/microsoft-corp-ar
+BMA:2050!https://es.investing.com/equities/macro
+ADGO:120!https://es.investing.com/equities/adecoagro-sa-ar
+GGAL:600!https://es.investing.com/equities/gp-fin-galicia
+ALUA:1850!https://es.investing.com/equities/aluar-chart
