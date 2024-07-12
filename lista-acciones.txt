@@ -1,2 +1,6 @@
-MSFT:500!https://es.tradingview.com/symbols/BCBA-MOLA/
-
+MOLA:441!https://es.tradingview.com/symbols/BCBA-MOLA/
+MSFT:500!https://es.tradingview.com/symbols/BCBA-MSFT/
+BMA:2050!https://es.tradingview.com/symbols/BCBA-BMA/
+ADGO:120!https://es.tradingview.com/symbols/BCBA-ADGO/
+GGAL:600!https://es.tradingview.com/symbols/BCBA-GGAL/
+ALUA:1850!https://es.tradingview.com/symbols/BCBA-ALUA/

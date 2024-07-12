@@ -91,10 +91,11 @@ public class ParserAcciones {
     public static double iAccionValue2 (String sUrl) throws MalformedURLException {
 		//        System.out.println("dentro del ParserPage -> iAccionValue");
 				String url = sUrl;//"https://es.investing.com/equities/microsoft-corp-ar";
-				url = "https://es-us.finanzas.yahoo.com/quote/MOLA.BA/";
+				//url = "https://es.tradingview.com/symbols/BCBA-MOLA/";
 				URL obj = new URL(url);
 				HttpURLConnection con;
 				double dArma = 0;
+				boolean bYetfound = false;
 				try {
 					con = (HttpURLConnection) obj.openConnection();
 					con.setRequestMethod("GET");
@@ -104,45 +105,32 @@ public class ParserAcciones {
 					con.setRequestProperty("X-API-EMAIL", "myEmail@mail.com");
 		
 					int responseCode = con.getResponseCode();
-					BufferedReader in = new BufferedReader(
-						new InputStreamReader(con.getInputStream()));
+					BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 					String inputLine;
 			//		StringBuffer response = new StringBuffer();
 					boolean bDolar = false;
 		
 					FileWriter fichero = new FileWriter("prueba.txt");
-
+					PrintWriter pw = new PrintWriter(fichero);
 					while ((inputLine = in.readLine()) != null) {
-//						System.out.println (inputLine);
-						int iStar = inputLine.indexOf("instrument-price-last");
-		//				int iEnd = inputLine.indexOf("1501");
-						System.out.print("////////////////////////////////////////");
-
-		        
-
-						PrintWriter pw = new PrintWriter(fichero);
-
-					
+						//escribe en el fichero prueba.txt
 						pw.println(inputLine);
 
+//						System.out.println (inputLine);
+						int iStar = inputLine.indexOf("El precio actual");
+		//				int iEnd = inputLine.indexOf("1501");
+						if (iStar != -1 && !bYetfound ) {
+							System.out.print("////////////////////////////////////////");
+							bYetfound = true;
+							int iEndValue = inputLine.indexOf("ARS", iStar) - 1;
+							int iStartValue = inputLine.indexOf("es", iStar) + 3;
+							String sAccionValue = inputLine.substring(iStartValue, iEndValue);
+							System.out.println("VALOR " + sAccionValue);
 
-
-
-						if (iStar != -1 && !bDolar) {
-		//					System.out.println(inputLine);
-		//					System.out.println("iStar es la que va: " + iStar);
-							int iStarValue = inputLine.indexOf(">",iStar) + 1;
-							int iEndValue = inputLine.indexOf("<", iStarValue);
-		//					System.out.println("iStarValue: " + iStarValue);
-		//                  System.out.println("iEndValue: " + iEndValue);
-		  //                  double dTmp = Double.parseDouble(inputLine.substring(iStarValue, iStarValue+7));
-			 //               iDolarNow = (int) dTmp;
-							//iDolarNow = Integer.valueOf(inputLine.substring(iStarValue+1, iStarValue+10));
-							String sAccionValue = inputLine.substring(iStarValue, iEndValue);
 		//					System.out.println ("sAccionValue: " +sAccionValue);
-		
+
 		//                    System.out.println("---------------------------");
-		 //                   String sOrigin=sAccionValue;
+		//                   String sOrigin=sAccionValue;
 							String sOrigin2=sAccionValue;
 			//                String sSub = "";
 							
@@ -151,17 +139,10 @@ public class ParserAcciones {
 								sOrigin2 = sOrigin2.replace(",", ".");
 								dArma = Double.valueOf(sOrigin2);
 							}
-		//                    System.out.println("---------------------------");
+							System.out.println ("dArma: " + dArma);
+							System.out.print("////////////////////////////////////////");
 						}
-						if (iStar != -1) {
-		//					bDolar = true;
-		//					System.out.println("iStar: " + iStar);
-						}
-		/* 				if (iEnd != -1) {
-							System.out.println("iEnd: " + iEnd);
-						}*/
-					
-			//			response.append(inputLine);
+
 					}
 					in.close();
 				} catch (IOException e) {

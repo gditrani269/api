@@ -197,9 +197,52 @@ public class ApiApplication {
 	String home4() throws MalformedURLException {
 		System.out.println ("Users3");
 		double dAccionGral = 0;
-		dAccionGral = ParserAcciones.iAccionValue2("https://es.tradingview.com/symbols/BCBA-MOLA/");
+		String sRta = "[";
+		int iKey = 0;
+		int iTotalPesos = 0;
+		int iDolarNow = 0;
+		try {
+			iDolarNow = ParserPage.iDolarLaNacion(); //iDolar ();
+			System.out.println("Dolar Blue de www.lanacion.com: " + iDolarNow);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		ArrayList<String> array = new ArrayList<>();
+
+		try {
+			array = leerArchivo.listActionsArray("lista-acciones.txt");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (int i = 0; i < array.size(); i++) {
+			String sOptionName = array.get(i).substring (0,array.get(i).indexOf(":"));
+			iKey ++;
+			sRta += "{\"accion\": \"" + sOptionName + "\",";
+			sRta += "\"id\": " + iKey + ",";
+			int iOptionQuantity = Integer.valueOf(array.get(i).substring (array.get(i).indexOf(":")+1,array.get(i).indexOf("!")));
+			String sUrlInvest = array.get(i).substring (array.get(i).indexOf("!")+1);
+			try {
+				dAccionGral = ParserAcciones.iAccionValue2(sUrlInvest);
+				sRta += "\"valor\": " + dAccionGral + ",";
+				sRta += "\"Cantidad\": " + iOptionQuantity + ",";
+				sRta += "\"Saldo_pesos\": " + iOptionQuantity * dAccionGral + ",";
+				iTotalPesos += iOptionQuantity * dAccionGral;
+				sRta += "\"Saldo_dolares\": " + (double)Math.round (iOptionQuantity * dAccionGral / iDolarNow * 100d) / 100d + "}," + //
+										"";
+										
+	//			iTotalUsd += iOptionQuantity * dAccionGral / iDolarNow;
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			System.out.println("Nombre Accion: " + sOptionName);
+		}
+
+
+
 		System.out.println("users3: " + 8);
-		return "8";//"{ dolar: " + iDolarNow + "}";
+		return sRta;//"{ dolar: " + iDolarNow + "}";
 	}
 //----------------------------------
     public static String muestraContenido(String archivo) throws FileNotFoundException, IOException { 
